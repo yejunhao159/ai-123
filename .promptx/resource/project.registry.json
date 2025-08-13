@@ -1,0 +1,179 @@
+{
+  "version": "2.0.0",
+  "source": "project",
+  "metadata": {
+    "version": "2.0.0",
+    "description": "project 级资源注册表",
+    "createdAt": "2025-08-13T13:54:12.327Z",
+    "updatedAt": "2025-08-13T13:54:12.340Z",
+    "resourceCount": 11
+  },
+  "resources": [
+    {
+      "id": "tech-landscape",
+      "source": "project",
+      "protocol": "knowledge",
+      "name": "Tech Landscape 知识库",
+      "description": "知识库，提供专业知识和信息",
+      "reference": "@project://.promptx/resource/knowledge/tech-landscape.knowledge.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.329Z",
+        "updatedAt": "2025-08-13T13:54:12.329Z",
+        "scannedAt": "2025-08-13T13:54:12.329Z",
+        "path": "knowledge/tech-landscape.knowledge.md"
+      }
+    },
+    {
+      "id": "achievement-designer",
+      "source": "project",
+      "protocol": "role",
+      "name": "Achievement Designer 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/achievement-designer/achievement-designer.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.330Z",
+        "updatedAt": "2025-08-13T13:54:12.330Z",
+        "scannedAt": "2025-08-13T13:54:12.330Z",
+        "path": "roles/achievement-designer/achievement-designer.role.md"
+      }
+    },
+    {
+      "id": "ai-class-advisor",
+      "source": "project",
+      "protocol": "role",
+      "name": "Ai Class Advisor 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/ai-class-advisor/ai-class-advisor.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.331Z",
+        "updatedAt": "2025-08-13T13:54:12.331Z",
+        "scannedAt": "2025-08-13T13:54:12.331Z",
+        "path": "roles/ai-class-advisor/ai-class-advisor.role.md"
+      }
+    },
+    {
+      "id": "intelligent-routing",
+      "source": "project",
+      "protocol": "execution",
+      "name": "Intelligent Routing 执行模式",
+      "description": "执行模式，定义具体的行为模式",
+      "reference": "@project://.promptx/resource/roles/ai-class-advisor/execution/intelligent-routing.execution.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.332Z",
+        "updatedAt": "2025-08-13T13:54:12.332Z",
+        "scannedAt": "2025-08-13T13:54:12.332Z",
+        "path": "roles/ai-class-advisor/execution/intelligent-routing.execution.md"
+      }
+    },
+    {
+      "id": "confusion-detective",
+      "source": "project",
+      "protocol": "role",
+      "name": "Confusion Detective 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/confusion-detective/confusion-detective.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.332Z",
+        "updatedAt": "2025-08-13T13:54:12.332Z",
+        "scannedAt": "2025-08-13T13:54:12.332Z",
+        "path": "roles/confusion-detective/confusion-detective.role.md"
+      }
+    },
+    {
+      "id": "experience-accumulator",
+      "source": "project",
+      "protocol": "role",
+      "name": "Experience Accumulator 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/experience-accumulator/experience-accumulator.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.333Z",
+        "updatedAt": "2025-08-13T13:54:12.333Z",
+        "scannedAt": "2025-08-13T13:54:12.333Z",
+        "path": "roles/experience-accumulator/experience-accumulator.role.md"
+      }
+    },
+    {
+      "id": "minimal-learning-path",
+      "source": "project",
+      "protocol": "execution",
+      "name": "Minimal Learning Path 执行模式",
+      "description": "执行模式，定义具体的行为模式",
+      "reference": "@project://.promptx/resource/roles/skill-coach/execution/minimal-learning-path.execution.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.334Z",
+        "updatedAt": "2025-08-13T13:54:12.334Z",
+        "scannedAt": "2025-08-13T13:54:12.334Z",
+        "path": "roles/skill-coach/execution/minimal-learning-path.execution.md"
+      }
+    },
+    {
+      "id": "skill-coach",
+      "source": "project",
+      "protocol": "role",
+      "name": "Skill Coach 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/skill-coach/skill-coach.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.335Z",
+        "updatedAt": "2025-08-13T13:54:12.335Z",
+        "scannedAt": "2025-08-13T13:54:12.335Z",
+        "path": "roles/skill-coach/skill-coach.role.md"
+      }
+    },
+    {
+      "id": "story-teller",
+      "source": "project",
+      "protocol": "role",
+      "name": "Story Teller 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/story-teller/story-teller.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.335Z",
+        "updatedAt": "2025-08-13T13:54:12.335Z",
+        "scannedAt": "2025-08-13T13:54:12.335Z",
+        "path": "roles/story-teller/story-teller.role.md"
+      }
+    },
+    {
+      "id": "task-decomposer",
+      "source": "project",
+      "protocol": "role",
+      "name": "Task Decomposer 角色",
+      "description": "专业角色，提供特定领域的专业能力",
+      "reference": "@project://.promptx/resource/roles/task-decomposer/task-decomposer.role.md",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.336Z",
+        "updatedAt": "2025-08-13T13:54:12.336Z",
+        "scannedAt": "2025-08-13T13:54:12.336Z",
+        "path": "roles/task-decomposer/task-decomposer.role.md"
+      }
+    },
+    {
+      "id": "edu-ai-system",
+      "source": "project",
+      "protocol": "tool",
+      "name": "Edu Ai System tool",
+      "description": "tool类型的资源",
+      "reference": "@project://.promptx/resource/tools/edu-ai-system.tool.js",
+      "metadata": {
+        "createdAt": "2025-08-13T13:54:12.339Z",
+        "updatedAt": "2025-08-13T13:54:12.339Z",
+        "scannedAt": "2025-08-13T13:54:12.339Z",
+        "path": "tools/edu-ai-system.tool.js"
+      }
+    }
+  ],
+  "stats": {
+    "totalResources": 11,
+    "byProtocol": {
+      "knowledge": 1,
+      "role": 7,
+      "execution": 2,
+      "tool": 1
+    },
+    "bySource": {
+      "project": 11
+    }
+  }
+}

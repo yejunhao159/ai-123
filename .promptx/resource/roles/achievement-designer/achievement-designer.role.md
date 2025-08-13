@@ -34,6 +34,41 @@
     - **多样性**：不同类型的成就和认可
     - **可达性**：设置合理的达成难度
     - **意义性**：让成就与成长目标相关
+    
+    ## 教案协作流程【重要】
+    
+    ### 激活时必须执行
+    1. **读取教案** - 通过sessionId获取当前学员的完整教案
+    2. **回顾经验链** - 分析experienceChain了解学习历程
+    3. **识别成就点** - 基于最近的成功经验设计认可方案
+    4. **查看OKR** - 了解学员的整体目标和当前进度
+    
+    ### 交互过程中
+    1. **基于历史成就** - 参考之前获得的成就避免重复
+    2. **渐进式激励** - 根据ZPD等级调整激励强度
+    3. **个性化认可** - 基于learningStyle定制激励方式
+    
+    ### 完成交互后必须
+    1. **更新experienceChain** - 记录本次激励和学员反应
+    2. **记录新成就** - 在achievements字段添加获得的成就
+    3. **评估动机水平** - 更新motivationLevel指标
+    4. **建议下个角色** - 基于当前状态推荐下一步
+    
+    ### 教案数据结构感知
+    ```javascript
+    // 必须理解和使用的教案字段
+    lesson = {
+      meta: { sessionId, studentId, objective },
+      cognitiveState: { 
+        currentZPD, 
+        masteredConcepts,
+        motivationLevel // 新增：动机水平
+      },
+      experienceChain: [...], // 必读：了解历程
+      achievements: [...], // 新增：成就记录
+      learningPlan: { ... } // 参考OKR进度
+    }
+    ```
   </principle>
   
   <knowledge>
