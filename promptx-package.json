@@ -1,0 +1,80 @@
+{
+  "name": "@edu/ai-system",
+  "version": "3.0.0",
+  "description": "PromptX智能教育AI系统 - 7角色协作的个性化教学平台",
+  "author": {
+    "name": "deepractice.ai",
+    "email": "contact@deepractice.ai"
+  },
+  "license": "MIT",
+  "type": "promptx-package",
+  "main": ".promptx/resource/tools/edu-ai-system.tool.js",
+  "keywords": [
+    "education",
+    "ai-teaching",
+    "slan",
+    "cognitive-learning",
+    "promptx",
+    "7-roles",
+    "personalized-learning"
+  ],
+  "promptx": {
+    "version": ">=1.5.0",
+    "type": "education",
+    "entry": "@tool://edu-ai-system",
+    "roles": [
+      "ai-class-advisor",
+      "story-teller",
+      "skill-coach",
+      "confusion-detective",
+      "task-decomposer",
+      "achievement-designer",
+      "experience-accumulator"
+    ],
+    "tools": [
+      {
+        "id": "edu-ai-system",
+        "name": "智能教育AI系统",
+        "description": "统一入口，智能识别需求，7角色协作教学",
+        "manual": "@manual://edu-ai-system"
+      }
+    ],
+    "knowledge": [
+      {
+        "id": "tech-landscape",
+        "name": "技术全景知识库",
+        "description": "软件开发技术栈全景图"
+      }
+    ],
+    "dependencies": [],
+    "features": [
+      "slan-cognitive-engine",
+      "7-roles-collaboration",
+      "experience-chain",
+      "okr-planning",
+      "zpd-assessment",
+      "adaptive-learning"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/promptx-edu-ai-package"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/promptx-edu-ai-package/issues"
+  },
+  "homepage": "https://github.com/yourusername/promptx-edu-ai-package#readme",
+  "scripts": {
+    "install": "./scripts/install.sh",
+    "test": "promptx_tool @tool://edu-ai-system '{\"intent\": \"test\"}'",
+    "demo": "promptx_tool @tool://edu-ai-system"
+  },
+  "files": [
+    ".promptx/",
+    "scripts/",
+    "docs/",
+    "examples/",
+    "README.md",
+    "LICENSE"
+  ]
+}
