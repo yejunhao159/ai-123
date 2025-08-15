@@ -8,8 +8,22 @@
 
 const fs = require('fs');
 const path = require('path');
+const TeacherTeamAnalyzer = require('./teacher-team-analyzer');
+const UserChoiceHandler = require('./user-choice-handler');
 
 module.exports = {
+  // 初始化教师团队分析器和用户选择处理器
+  teacherTeam: new TeacherTeamAnalyzer(),
+  userChoiceHandler: null, // 延迟初始化，避免循环依赖
+  
+  // 初始化方法
+  init() {
+    if (!this.userChoiceHandler) {
+      const UserChoiceHandler = require('./user-choice-handler');
+      this.userChoiceHandler = new UserChoiceHandler(this);
+    }
+  },
+  
   getDependencies() {
     return [];
   },
@@ -219,29 +233,47 @@ module.exports = {
   },
 
   async execute(params = {}) {
-    const { intent, message, config = {} } = params;
+    // 确保初始化
+    this.init();
     
-    // 智能识别用户意图
+    const { intent, message, config = {}, selectedRole, userChoice, studentId = 'default' } = params;
+    
+    // 如果是用户选择操作，处理选择
+    if (userChoice) {
+      const context = { message, config, studentId };
+      return this.userChoiceHandler.handleChoice(userChoice, context);
+    }
+    
+    // 如果用户明确选择了角色，直接执行
+    if (selectedRole) {
+      return this.executeWithRole(selectedRole, message, config);
+    }
+    
+    // 尝试从自然语言中解析用户选择
+    if (message) {
+      const naturalChoice = this.userChoiceHandler.parseNaturalChoice(message);
+      if (naturalChoice && naturalChoice.confidence > 0.7) {
+        const context = { message, config, studentId };
+        return this.userChoiceHandler.handleChoice(naturalChoice, context);
+      }
+    }
+    
+    // 获取上下文信息
+    const context = this.buildContext(message, config, studentId);
+    
+    // 使用教师团队模式分析
+    const teamAnalysis = await this.teacherTeam.analyzeInParallel(message || '', context);
+    
+    // 智能识别用户意图（保留原有逻辑作为补充）
     const detectedIntent = this.detectIntent(intent, message);
     
-    // 根据意图返回不同的执行方案
-    switch (detectedIntent) {
-      case 'explore':
-        return this.exploreTechLandscape();
-      
-      case 'start':
-        return this.startLearning(config);
-      
-      case 'continue':
-        return this.continueLearning(message);
-      
-      case 'assess':
-        return this.assessProgress();
-      
-      case 'help':
-      default:
-        return this.showHelp();
-    }
+    // 构建教师团队响应
+    const teamResponse = this.buildTeacherTeamResponse(teamAnalysis, detectedIntent, context);
+    
+    // 添加用户友好的交互提示
+    teamResponse.data.interactionHint = this.userChoiceHandler.generateUserPrompt(teamResponse);
+    
+    return teamResponse;
   },
 
   /**
@@ -588,5 +620,210 @@ module.exports = {
     
     // 默认
     return 'ai-class-advisor';
+  },
+
+  /**
+   * 构建上下文信息
+   */
+  buildContext(message, config, studentId) {
+    const latestLesson = this.lessonManager.getLatestLesson(studentId);
+    
+    return {
+      previousRole: latestLesson?.meta?.currentRole,
+      learningPhase: this.detectLearningPhase(message, latestLesson),
+      sessionExists: !!latestLesson,
+      studentProfile: this.buildStudentProfile(latestLesson),
+      timeOfDay: new Date().getHours(),
+      ...config
+    };
+  },
+
+  /**
+   * 检测学习阶段
+   */
+  detectLearningPhase(message, lesson) {
+    if (!lesson) return 'exploring';
+    
+    const messageLower = (message || '').toLowerCase();
+    const experienceCount = lesson.experienceChain?.length || 0;
+    
+    if (experienceCount === 0) return 'exploring';
+    if (experienceCount < 3) return 'learning';
+    if (messageLower.includes('练习') || messageLower.includes('实践')) return 'practicing';
+    if (experienceCount > 10) return 'mastering';
+    
+    return 'learning';
+  },
+
+  /**
+   * 构建学生画像
+   */
+  buildStudentProfile(lesson) {
+    if (!lesson) return { level: 'beginner', preferences: [] };
+    
+    return {
+      level: lesson.cognitiveState?.currentZPD || 3,
+      masteredConcepts: lesson.cognitiveState?.masteredConcepts || [],
+      strugglingPoints: lesson.cognitiveState?.strugglingPoints || [],
+      learningStyle: lesson.cognitiveState?.learningStyle || 'mixed'
+    };
+  },
+
+  /**
+   * 构建教师团队响应
+   */
+  buildTeacherTeamResponse(teamAnalysis, detectedIntent, context) {
+    return {
+      success: true,
+      mode: 'teacher-team',
+      data: {
+        // 主要回答
+        primaryTeacher: {
+          role: teamAnalysis.primary.role,
+          name: teamAnalysis.primary.roleName,
+          confidence: teamAnalysis.primary.confidence,
+          message: this.generateRoleResponse(teamAnalysis.primary.role, detectedIntent, context),
+          reason: teamAnalysis.primary.reason
+        },
+        
+        // 其他教师的建议
+        otherTeachers: teamAnalysis.alternatives.map(alt => ({
+          role: alt.role,
+          name: alt.roleName,
+          preview: alt.preview,
+          confidence: alt.confidence,
+          action: `switch_to_${alt.role}`
+        })),
+        
+        // 团队分析元信息
+        teamInsights: {
+          consensusLevel: teamAnalysis.teamThinking.consensusLevel,
+          diversityScore: teamAnalysis.teamThinking.diversityScore,
+          totalAnalyzed: teamAnalysis.teamThinking.totalAnalyzed
+        },
+
+        // 用户选择提示
+        userChoices: [
+          {
+            label: `继续听${teamAnalysis.primary.roleName}说`,
+            action: 'continue_primary',
+            default: true
+          },
+          ...teamAnalysis.alternatives.slice(0, 2).map(alt => ({
+            label: `我想听${alt.roleName}的建议`,
+            action: `switch_to_${alt.role}`,
+            role: alt.role
+          })),
+          {
+            label: '我想自己选择老师',
+            action: 'show_all_teachers'
+          }
+        ],
+
+        // 会话信息
+        session: context.sessionExists ? {
+          hasHistory: true,
+          phase: context.learningPhase,
+          previousRole: context.previousRole
+        } : null
+      }
+    };
+  },
+
+  /**
+   * 根据角色生成具体回答
+   */
+  generateRoleResponse(roleId, intent, context) {
+    // 基础回答模板，实际使用时应该调用各角色的具体逻辑
+    const responses = {
+      'ai-class-advisor': this.generateAdvisorResponse(intent, context),
+      'story-teller': this.generateStoryResponse(intent, context),
+      'skill-coach': this.generateCoachResponse(intent, context),
+      'confusion-detective': this.generateDetectiveResponse(intent, context),
+      'task-decomposer': this.generateDecomposerResponse(intent, context),
+      'achievement-designer': this.generateAchievementResponse(intent, context),
+      'experience-accumulator': this.generateAccumulatorResponse(intent, context)
+    };
+    
+    return responses[roleId] || '我来帮助你学习！';
+  },
+
+  /**
+   * 班主任响应生成
+   */
+  generateAdvisorResponse(intent, context) {
+    if (intent === 'explore') {
+      return '你好！作为你的班主任，我来帮你规划整个学习路径。让我先了解一下你的背景和目标...';
+    }
+    if (intent === 'start') {
+      return '很好！既然你有明确的学习目标，我来为你制定一个系统的学习计划...';
+    }
+    return '作为班主任，我负责整体协调你的学习进度。有什么需要规划的吗？';
+  },
+
+  /**
+   * 故事讲述者响应生成  
+   */
+  generateStoryResponse(intent, context) {
+    return '让我用一个生动的故事来解释这个概念，这样你就能更好地理解了...';
+  },
+
+  /**
+   * 技能教练响应生成
+   */
+  generateCoachResponse(intent, context) {
+    return '来，让我们通过实际的代码练习来掌握这个技能。我会手把手教你...';
+  },
+
+  /**
+   * 困惑侦探响应生成
+   */
+  generateDetectiveResponse(intent, context) {
+    return '我发现你可能在某个地方遇到了困惑。让我来帮你分析问题出在哪里...';
+  },
+
+  /**
+   * 任务分解专家响应生成
+   */
+  generateDecomposerResponse(intent, context) {
+    return '这个任务看起来很复杂，让我把它分解成几个小步骤，这样就容易多了...';
+  },
+
+  /**
+   * 成就设计师响应生成
+   */
+  generateAchievementResponse(intent, context) {
+    return '太棒了！你的进步很明显，让我来设计一些小目标激励你继续前进...';
+  },
+
+  /**
+   * 经验积累官响应生成
+   */
+  generateAccumulatorResponse(intent, context) {
+    return '让我们来总结一下你已经掌握的知识点，并规划后续的复习计划...';
+  },
+
+  /**
+   * 直接执行指定角色
+   */
+  executeWithRole(roleId, message, config) {
+    const context = this.buildContext(message, config);
+    const intent = this.detectIntent(null, message);
+    
+    return {
+      success: true,
+      mode: 'single-teacher',
+      data: {
+        teacher: {
+          role: roleId,
+          name: this.teacherTeam.teachers[roleId]?.name || roleId,
+          message: this.generateRoleResponse(roleId, intent, context)
+        },
+        switchBackOption: {
+          label: '我想听听其他老师的建议',
+          action: 'team_mode'
+        }
+      }
+    };
   }
 };
