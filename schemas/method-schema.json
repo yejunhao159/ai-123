@@ -1,0 +1,270 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "教学方法模板Schema",
+  "description": "定义教学方法模板的标准格式",
+  "type": "object",
+  "required": ["name", "type", "description", "parameters", "implementation"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "方法名称",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9_-]*$"
+    },
+    "type": {
+      "type": "string",
+      "description": "方法类型",
+      "enum": [
+        "comparative",
+        "practical",
+        "diagnostic",
+        "decomposition", 
+        "motivation",
+        "sedimentation",
+        "custom"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "版本号",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "default": "1.0.0"
+    },
+    "description": {
+      "type": "string",
+      "description": "方法描述",
+      "minLength": 10
+    },
+    "category": {
+      "type": "string",
+      "description": "方法分类",
+      "enum": [
+        "teaching",
+        "assessment", 
+        "engagement",
+        "feedback",
+        "analysis",
+        "support"
+      ],
+      "default": "teaching"
+    },
+    "tags": {
+      "type": "array",
+      "description": "方法标签",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "方法能力",
+      "items": {
+        "type": "string",
+        "enum": [
+          "async",
+          "chainable", 
+          "parallel",
+          "conditional",
+          "interactive",
+          "adaptive",
+          "persistent"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "parameters": {
+      "type": "object",
+      "description": "参数定义",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["string", "number", "boolean", "object", "array"]
+            },
+            "required": {
+              "type": "boolean",
+              "default": false
+            },
+            "default": {
+              "description": "默认值"
+            },
+            "description": {
+              "type": "string"
+            },
+            "enum": {
+              "type": "array",
+              "description": "枚举值"
+            },
+            "min": {
+              "type": "number",
+              "description": "最小值（数字类型）"
+            },
+            "max": {
+              "type": "number", 
+              "description": "最大值（数字类型）"
+            },
+            "minLength": {
+              "type": "integer",
+              "description": "最小长度（字符串/数组类型）"
+            },
+            "maxLength": {
+              "type": "integer",
+              "description": "最大长度（字符串/数组类型）"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "正则表达式（字符串类型）"
+            }
+          }
+        }
+      }
+    },
+    "implementation": {
+      "type": "object",
+      "description": "实现配置",
+      "required": ["steps"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "description": "执行步骤",
+          "items": {
+            "type": "object",
+            "required": ["name", "action"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "步骤名称"
+              },
+              "description": {
+                "type": "string",
+                "description": "步骤描述"
+              },
+              "action": {
+                "type": "string",
+                "description": "执行动作",
+                "enum": [
+                  "analyze",
+                  "compare", 
+                  "generate",
+                  "evaluate",
+                  "interact",
+                  "store",
+                  "retrieve",
+                  "transform",
+                  "validate",
+                  "custom"
+                ]
+              },
+              "conditions": {
+                "type": "object",
+                "description": "执行条件"
+              },
+              "config": {
+                "type": "object",
+                "description": "步骤配置"
+              },
+              "output": {
+                "type": "object",
+                "description": "输出配置",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "type": "string"
+                  },
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "hooks": {
+          "type": "object",
+          "description": "钩子配置",
+          "properties": {
+            "beforeExecute": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "afterExecute": {
+              "type": "array", 
+              "items": {
+                "type": "string"
+              }
+            },
+            "onError": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "description": "验证规则",
+          "properties": {
+            "input": {
+              "type": "object"
+            },
+            "output": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "元数据",
+      "properties": {
+        "author": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "license": {
+          "type": "string"
+        },
+        "documentation": {
+          "type": "string",
+          "format": "uri"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "input": {
+                "type": "object"
+              },
+              "expectedOutput": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

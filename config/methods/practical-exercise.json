@@ -1,0 +1,171 @@
+{
+  "name": "practicalExercise",
+  "type": "practical",
+  "version": "1.0.0",
+  "description": "实践练习法：通过动手实践和练习来巩固学习成果",
+  "category": "teaching",
+  "tags": ["实践", "练习", "动手", "巩固"],
+  "capabilities": ["interactive", "adaptive", "persistent"],
+  "parameters": {
+    "topic": {
+      "type": "string",
+      "required": true,
+      "description": "练习主题"
+    },
+    "skillLevel": {
+      "type": "string",
+      "required": false,
+      "default": "beginner",
+      "enum": ["beginner", "intermediate", "advanced"],
+      "description": "技能水平"
+    },
+    "exerciseType": {
+      "type": "string",
+      "required": false,
+      "default": "guided",
+      "enum": ["guided", "free-form", "challenge", "project"],
+      "description": "练习类型"
+    },
+    "timeLimit": {
+      "type": "number",
+      "required": false,
+      "description": "时间限制（分钟）",
+      "min": 5,
+      "max": 180
+    },
+    "provideFeedback": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否提供反馈"
+    },
+    "allowHints": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否允许提示"
+    },
+    "difficultyProgression": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "description": "是否启用难度递进"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "assessPrerequisites",
+        "description": "评估前置知识和技能",
+        "action": "evaluate",
+        "config": {
+          "checkKnowledge": true,
+          "identifyGaps": true
+        }
+      },
+      {
+        "name": "designExercise",
+        "description": "设计练习内容",
+        "action": "generate",
+        "config": {
+          "createTasks": true,
+          "setObjectives": true,
+          "prepareMaterials": true
+        }
+      },
+      {
+        "name": "provideInstructions",
+        "description": "提供练习指导",
+        "action": "interact",
+        "config": {
+          "clearInstructions": true,
+          "exampleDemonstration": true
+        }
+      },
+      {
+        "name": "monitorProgress",
+        "description": "监控练习进度",
+        "action": "analyze",
+        "conditions": {
+          "exerciseType": ["guided", "challenge"]
+        },
+        "config": {
+          "trackSteps": true,
+          "identifyStruggles": true,
+          "provideHints": true
+        }
+      },
+      {
+        "name": "provideFeedback",
+        "description": "提供练习反馈",
+        "action": "evaluate",
+        "conditions": {
+          "provideFeedback": true
+        },
+        "config": {
+          "assessPerformance": true,
+          "identifyImprovements": true,
+          "encourageProgress": true
+        }
+      },
+      {
+        "name": "summarizeResults",
+        "description": "总结练习结果",
+        "action": "transform",
+        "config": {
+          "compileLearnings": true,
+          "documentProgress": true
+        },
+        "output": {
+          "type": "object",
+          "format": "structured",
+          "schema": {
+            "completed": "boolean",
+            "score": "number",
+            "feedback": "string",
+            "nextSteps": "array"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["prepareEnvironment", "loadResources"],
+      "afterExecute": ["saveProgress", "updateSkillProfile"],
+      "onError": ["provideSupport", "adjustDifficulty"]
+    },
+    "validation": {
+      "input": {
+        "topic": {
+          "minLength": 3
+        }
+      },
+      "output": {
+        "required": ["completed", "feedback"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "JavaScript函数练习",
+        "description": "练习编写JavaScript函数",
+        "input": {
+          "topic": "JavaScript函数",
+          "skillLevel": "beginner",
+          "exerciseType": "guided",
+          "timeLimit": 30,
+          "provideFeedback": true
+        },
+        "expectedOutput": {
+          "completed": true,
+          "score": 85,
+          "feedback": "很好地掌握了函数的基本概念，建议多练习箭头函数的使用",
+          "nextSteps": ["箭头函数", "高阶函数", "回调函数"]
+        }
+      }
+    ]
+  }
+}
