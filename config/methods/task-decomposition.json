@@ -1,0 +1,222 @@
+{
+  "name": "taskDecomposition",
+  "type": "decomposition",
+  "version": "1.0.0", 
+  "description": "任务分解法：将复杂任务分解为更小、更易管理的子任务",
+  "category": "teaching",
+  "tags": ["分解", "规划", "组织", "管理"],
+  "capabilities": ["hierarchical", "recursive", "adaptive"],
+  "parameters": {
+    "task": {
+      "type": "string",
+      "required": true,
+      "description": "需要分解的任务描述",
+      "minLength": 5
+    },
+    "complexity": {
+      "type": "string",
+      "required": false,
+      "default": "medium",
+      "enum": ["simple", "medium", "complex", "very_complex"],
+      "description": "任务复杂度"
+    },
+    "timeframe": {
+      "type": "string",
+      "required": false,
+      "description": "时间框架（如'1周'、'1个月'）"
+    },
+    "constraints": {
+      "type": "array",
+      "required": false,
+      "description": "约束条件",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resources": {
+      "type": "array", 
+      "required": false,
+      "description": "可用资源",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decompositionStrategy": {
+      "type": "string",
+      "required": false,
+      "default": "hierarchical",
+      "enum": ["hierarchical", "sequential", "parallel", "feature-based", "risk-based"],
+      "description": "分解策略"
+    },
+    "maxDepth": {
+      "type": "number",
+      "required": false,
+      "default": 3,
+      "min": 1,
+      "max": 5,
+      "description": "最大分解深度"
+    },
+    "includeEstimates": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否包含时间估算"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "analyzeTask",
+        "description": "分析任务特征",
+        "action": "analyze",
+        "config": {
+          "identifyComponents": true,
+          "assessComplexity": true,
+          "mapDependencies": true
+        }
+      },
+      {
+        "name": "selectStrategy",
+        "description": "选择分解策略",
+        "action": "evaluate",
+        "config": {
+          "considerTaskType": true,
+          "evaluateConstraints": true,
+          "optimizeApproach": true
+        }
+      },
+      {
+        "name": "performDecomposition",
+        "description": "执行任务分解",
+        "action": "generate",
+        "config": {
+          "breakDownRecursively": true,
+          "maintainCoherence": true,
+          "ensureCompleteness": true
+        }
+      },
+      {
+        "name": "organizeSubtasks",
+        "description": "组织子任务结构",
+        "action": "transform",
+        "config": {
+          "createHierarchy": true,
+          "establishSequence": true,
+          "identifyParallelism": true
+        }
+      },
+      {
+        "name": "estimateEffort",
+        "description": "估算工作量",
+        "action": "evaluate",
+        "conditions": {
+          "includeEstimates": true
+        },
+        "config": {
+          "timeEstimation": true,
+          "resourceEstimation": true,
+          "riskAssessment": true
+        }
+      },
+      {
+        "name": "validateDecomposition",
+        "description": "验证分解结果",
+        "action": "validate",
+        "config": {
+          "checkCompleteness": true,
+          "verifyFeasibility": true,
+          "ensureAlignment": true
+        }
+      },
+      {
+        "name": "createPlan",
+        "description": "创建执行计划",
+        "action": "generate",
+        "config": {
+          "sequenceTasks": true,
+          "allocateResources": true,
+          "defineMilestones": true
+        },
+        "output": {
+          "type": "object",
+          "format": "execution_plan",
+          "schema": {
+            "tasks": "array",
+            "timeline": "object",
+            "dependencies": "array",
+            "milestones": "array"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["loadTemplates", "initializeContext"],
+      "afterExecute": ["saveDecomposition", "notifyStakeholders"],
+      "onError": ["adjustStrategy", "requestGuidance"]
+    },
+    "validation": {
+      "input": {
+        "task": {
+          "minLength": 5,
+          "maxLength": 1000
+        },
+        "maxDepth": {
+          "min": 1,
+          "max": 5
+        }
+      },
+      "output": {
+        "required": ["tasks", "dependencies"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "学习React框架",
+        "description": "将学习React框架分解为具体的学习任务",
+        "input": {
+          "task": "学习React框架并能够开发一个完整的前端应用",
+          "complexity": "complex",
+          "timeframe": "2个月",
+          "decompositionStrategy": "hierarchical",
+          "includeEstimates": true
+        },
+        "expectedOutput": {
+          "tasks": [
+            {
+              "id": "1",
+              "name": "React基础概念",
+              "subtasks": [
+                "JSX语法",
+                "组件基础",
+                "状态管理"
+              ],
+              "estimated_time": "1周"
+            },
+            {
+              "id": "2", 
+              "name": "高级特性",
+              "subtasks": [
+                "Hooks使用",
+                "上下文管理",
+                "性能优化"
+              ],
+              "estimated_time": "2周"
+            }
+          ],
+          "dependencies": [
+            {
+              "from": "1",
+              "to": "2",
+              "type": "prerequisite"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

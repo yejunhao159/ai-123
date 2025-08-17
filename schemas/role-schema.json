@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "角色定义配置Schema",
+  "description": "定义AI教学角色的标准配置格式",
+  "type": "object",
+  "required": ["id", "name", "capabilities"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z-]+$",
+      "description": "角色唯一标识符，只能包含小写字母和连字符"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "角色显示名称"
+    },
+    "description": {
+      "type": "string",
+      "description": "角色详细描述"
+    },
+    "emoji": {
+      "type": "string",
+      "description": "角色代表表情符号"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "角色配置版本号"
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["primary"],
+      "properties": {
+        "primary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "主要能力列表"
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "次要能力列表"
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "能力限制列表"
+        }
+      }
+    },
+    "characteristics": {
+      "type": "object",
+      "properties": {
+        "personality": {
+          "type": "object",
+          "description": "个性特征"
+        },
+        "communicationStyle": {
+          "type": "object",
+          "description": "沟通风格"
+        },
+        "expertise": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "专业领域"
+        }
+      }
+    },
+    "collaboration": {
+      "type": "object",
+      "properties": {
+        "canDiscussWith": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "可协作的角色列表"
+        },
+        "leadTopics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "擅长主导的主题"
+        },
+        "supportRole": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "支持的角色"
+        }
+      }
+    },
+    "behaviors": {
+      "type": "object",
+      "properties": {
+        "triggers": {
+          "type": "object",
+          "description": "触发条件映射"
+        },
+        "responses": {
+          "type": "object",
+          "description": "响应模式"
+        },
+        "strategies": {
+          "type": "object",
+          "description": "策略模式"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time", 
+          "description": "更新时间"
+        },
+        "author": {
+          "type": "string",
+          "description": "创建者"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "标签列表"
+        }
+      }
+    }
+  }
+}

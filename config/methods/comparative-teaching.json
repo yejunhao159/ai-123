@@ -1,0 +1,150 @@
+{
+  "name": "comparativeTeaching",
+  "type": "comparative",
+  "version": "1.0.0",
+  "description": "对比教学法：通过对比不同概念、方法或解决方案来加深理解",
+  "category": "teaching",
+  "tags": ["对比", "分析", "理解", "概念"],
+  "capabilities": ["chainable", "adaptive"],
+  "parameters": {
+    "concepts": {
+      "type": "array",
+      "required": true,
+      "description": "需要对比的概念或方法列表",
+      "minLength": 2
+    },
+    "comparisonAspects": {
+      "type": "array",
+      "required": false,
+      "default": ["功能", "优缺点", "适用场景", "复杂度"],
+      "description": "对比的维度"
+    },
+    "targetAudience": {
+      "type": "string",
+      "required": false,
+      "default": "general",
+      "enum": ["beginner", "intermediate", "advanced", "general"],
+      "description": "目标受众"
+    },
+    "outputFormat": {
+      "type": "string",
+      "required": false,
+      "default": "table",
+      "enum": ["table", "narrative", "structured", "visual"],
+      "description": "输出格式"
+    },
+    "detailLevel": {
+      "type": "string",
+      "required": false,
+      "default": "medium",
+      "enum": ["brief", "medium", "detailed"],
+      "description": "详细程度"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "analyzeInput",
+        "description": "分析输入的概念和对比要求",
+        "action": "analyze",
+        "config": {
+          "validateConcepts": true,
+          "extractKeyFeatures": true
+        }
+      },
+      {
+        "name": "structureComparison",
+        "description": "构建对比框架",
+        "action": "generate",
+        "config": {
+          "createMatrix": true,
+          "defineAspects": true
+        }
+      },
+      {
+        "name": "performComparison",
+        "description": "执行详细对比分析",
+        "action": "compare",
+        "config": {
+          "analyzeEachAspect": true,
+          "identifyDifferences": true,
+          "findSimilarities": true
+        }
+      },
+      {
+        "name": "generateInsights",
+        "description": "生成对比洞察和结论",
+        "action": "evaluate",
+        "config": {
+          "synthesizeFindings": true,
+          "provideRecommendations": true
+        }
+      },
+      {
+        "name": "formatOutput",
+        "description": "格式化输出结果",
+        "action": "transform",
+        "config": {
+          "applyFormat": true,
+          "addVisualElements": true
+        },
+        "output": {
+          "type": "object",
+          "format": "structured",
+          "schema": {
+            "comparison": "object",
+            "insights": "array",
+            "recommendations": "string"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["validateInput", "prepareContext"],
+      "afterExecute": ["logResults", "updateLearningPath"]
+    },
+    "validation": {
+      "input": {
+        "concepts": {
+          "minItems": 2,
+          "maxItems": 5
+        }
+      },
+      "output": {
+        "required": ["comparison", "insights"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "编程语言对比",
+        "description": "对比Python和JavaScript的特点",
+        "input": {
+          "concepts": ["Python", "JavaScript"],
+          "comparisonAspects": ["语法", "性能", "生态系统", "应用场景"],
+          "targetAudience": "beginner"
+        },
+        "expectedOutput": {
+          "comparison": {
+            "Python": {
+              "语法": "简洁易读",
+              "性能": "解释型，相对较慢",
+              "生态系统": "丰富的科学计算库",
+              "应用场景": "数据科学、AI、后端开发"
+            },
+            "JavaScript": {
+              "语法": "灵活多样",
+              "性能": "V8引擎优化，较快",
+              "生态系统": "庞大的前端生态",
+              "应用场景": "前端开发、全栈开发"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

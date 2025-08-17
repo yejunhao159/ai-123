@@ -1,0 +1,237 @@
+{
+  "name": "motivationFeedback",
+  "type": "motivation",
+  "version": "1.0.0",
+  "description": "激励反馈法：提供积极反馈和激励来促进学习动机",
+  "category": "engagement",
+  "tags": ["激励", "反馈", "动机", "鼓励"],
+  "capabilities": ["adaptive", "personalized", "emotional"],
+  "parameters": {
+    "performance": {
+      "type": "object",
+      "required": true,
+      "description": "学习者表现数据",
+      "properties": {
+        "score": {
+          "type": "number",
+          "min": 0,
+          "max": 100
+        },
+        "progress": {
+          "type": "number",
+          "min": 0,
+          "max": 100
+        },
+        "effort": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    },
+    "learnerProfile": {
+      "type": "object",
+      "required": false,
+      "description": "学习者画像",
+      "properties": {
+        "motivationType": {
+          "type": "string",
+          "enum": ["achievement", "social", "mastery", "autonomy"]
+        },
+        "learningStyle": {
+          "type": "string", 
+          "enum": ["visual", "auditory", "kinesthetic", "mixed"]
+        },
+        "confidenceLevel": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": false,
+      "description": "学习上下文",
+      "properties": {
+        "stage": {
+          "type": "string",
+          "enum": ["beginning", "middle", "advanced", "completion"]
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["easy", "moderate", "challenging", "very_difficult"]
+        },
+        "recentStruggle": {
+          "type": "boolean"
+        }
+      }
+    },
+    "feedbackStyle": {
+      "type": "string",
+      "required": false,
+      "default": "balanced",
+      "enum": ["encouraging", "constructive", "challenging", "balanced"],
+      "description": "反馈风格"
+    },
+    "includeNextSteps": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否包含下一步建议"
+    },
+    "personalizationLevel": {
+      "type": "string",
+      "required": false,
+      "default": "medium",
+      "enum": ["low", "medium", "high"],
+      "description": "个性化程度"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "assessPerformance", 
+        "description": "评估学习表现",
+        "action": "analyze",
+        "config": {
+          "scoreAnalysis": true,
+          "progressTracking": true,
+          "effortRecognition": true
+        }
+      },
+      {
+        "name": "identifyAchievements",
+        "description": "识别成就和亮点",
+        "action": "analyze", 
+        "config": {
+          "highlightStrengths": true,
+          "recognizeImprovement": true,
+          "celebrateMilestones": true
+        }
+      },
+      {
+        "name": "identifyGrowthAreas",
+        "description": "识别成长空间",
+        "action": "analyze",
+        "config": {
+          "constructiveAnalysis": true,
+          "opportunityIdentification": true,
+          "skillGapAnalysis": true
+        }
+      },
+      {
+        "name": "personalizeMessage",
+        "description": "个性化反馈消息",
+        "action": "generate",
+        "config": {
+          "adaptToProfile": true,
+          "matchCommunicationStyle": true,
+          "considerContext": true
+        }
+      },
+      {
+        "name": "generateMotivation",
+        "description": "生成激励内容",
+        "action": "generate",
+        "config": {
+          "encouragingMessages": true,
+          "goalReminders": true,
+          "successVisualization": true
+        }
+      },
+      {
+        "name": "suggestNextSteps",
+        "description": "建议下一步行动",
+        "action": "generate",
+        "conditions": {
+          "includeNextSteps": true
+        },
+        "config": {
+          "actionableAdvice": true,
+          "appropriateChallenges": true,
+          "resourceRecommendations": true
+        }
+      },
+      {
+        "name": "formatFeedback",
+        "description": "格式化反馈输出",
+        "action": "transform",
+        "config": {
+          "structuredLayout": true,
+          "emotionalTone": true,
+          "visualElements": true
+        },
+        "output": {
+          "type": "object",
+          "format": "motivational_feedback",
+          "schema": {
+            "achievements": "array",
+            "encouragement": "string",
+            "growthAreas": "array", 
+            "nextSteps": "array",
+            "motivationalQuote": "string"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["loadPersonalizationData", "setEmotionalContext"],
+      "afterExecute": ["updateMotivationProfile", "trackEngagement"],
+      "onError": ["provideSupportMessage", "escalateToHuman"]
+    },
+    "validation": {
+      "input": {
+        "performance": {
+          "required": ["score"]
+        }
+      },
+      "output": {
+        "required": ["achievements", "encouragement"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "编程练习反馈",
+        "description": "为编程练习提供激励性反馈",
+        "input": {
+          "performance": {
+            "score": 75,
+            "progress": 60,
+            "effort": "high"
+          },
+          "learnerProfile": {
+            "motivationType": "mastery",
+            "confidenceLevel": "medium"
+          },
+          "context": {
+            "stage": "middle",
+            "difficulty": "challenging",
+            "recentStruggle": true
+          },
+          "feedbackStyle": "encouraging"
+        },
+        "expectedOutput": {
+          "achievements": [
+            "成功完成了75%的练习内容",
+            "在困难的挑战中展现了坚持精神",
+            "代码逻辑思维有明显进步"
+          ],
+          "encouragement": "你的努力和坚持非常值得赞赏！虽然遇到了一些挑战，但你的进步是显著的。",
+          "growthAreas": [
+            "可以多练习错误处理的技巧",
+            "尝试优化代码的性能"
+          ],
+          "nextSteps": [
+            "复习今天学到的关键概念", 
+            "尝试一个稍微简单的相关练习",
+            "参考示例代码的最佳实践"
+          ]
+        }
+      }
+    ]
+  }
+}

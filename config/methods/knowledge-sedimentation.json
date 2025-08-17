@@ -1,0 +1,239 @@
+{
+  "name": "knowledgeSedimentation",
+  "type": "sedimentation",
+  "version": "1.0.0",
+  "description": "知识沉淀法：系统化整理和固化学习成果，形成可复用的知识资产",
+  "category": "support",
+  "tags": ["知识管理", "沉淀", "总结", "归档"],
+  "capabilities": ["persistent", "systematic", "searchable"],
+  "parameters": {
+    "learningContent": {
+      "type": "object",
+      "required": true,
+      "description": "学习内容",
+      "properties": {
+        "topic": {
+          "type": "string"
+        },
+        "concepts": {
+          "type": "array"
+        },
+        "examples": {
+          "type": "array"
+        },
+        "exercises": {
+          "type": "array"
+        }
+      }
+    },
+    "sedimentationType": {
+      "type": "string",
+      "required": false,
+      "default": "comprehensive",
+      "enum": ["summary", "detailed", "comprehensive", "reference"],
+      "description": "沉淀类型"
+    },
+    "organizationMethod": {
+      "type": "string",
+      "required": false,
+      "default": "hierarchical",
+      "enum": ["hierarchical", "conceptual", "chronological", "difficulty-based"],
+      "description": "组织方法"
+    },
+    "includeMetadata": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否包含元数据"
+    },
+    "generateIndex": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否生成索引"
+    },
+    "linkRelatedConcepts": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否链接相关概念"
+    },
+    "outputFormat": {
+      "type": "string",
+      "required": false,
+      "default": "structured",
+      "enum": ["structured", "markdown", "wiki", "json", "mind-map"],
+      "description": "输出格式"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "extractKeyKnowledge",
+        "description": "提取关键知识点",
+        "action": "analyze",
+        "config": {
+          "identifyCorePoints": true,
+          "extractDefinitions": true,
+          "captureExamples": true
+        }
+      },
+      {
+        "name": "categorizeContent",
+        "description": "分类整理内容",
+        "action": "transform",
+        "config": {
+          "groupByTopic": true,
+          "organizeByConcept": true,
+          "prioritizeImportance": true
+        }
+      },
+      {
+        "name": "createSummaries",
+        "description": "创建摘要",
+        "action": "generate",
+        "config": {
+          "conceptSummaries": true,
+          "keyTakeaways": true,
+          "practicalApplications": true
+        }
+      },
+      {
+        "name": "buildConnections",
+        "description": "构建知识连接",
+        "action": "analyze",
+        "conditions": {
+          "linkRelatedConcepts": true
+        },
+        "config": {
+          "identifyRelationships": true,
+          "createCrossReferences": true,
+          "buildKnowledgeGraph": true
+        }
+      },
+      {
+        "name": "generateMetadata",
+        "description": "生成元数据",
+        "action": "generate",
+        "conditions": {
+          "includeMetadata": true
+        },
+        "config": {
+          "learningObjectives": true,
+          "difficultyLevel": true,
+          "timeInvestment": true,
+          "prerequisites": true
+        }
+      },
+      {
+        "name": "createIndex",
+        "description": "创建检索索引",
+        "action": "generate",
+        "conditions": {
+          "generateIndex": true
+        },
+        "config": {
+          "keywordIndex": true,
+          "conceptIndex": true,
+          "topicalIndex": true
+        }
+      },
+      {
+        "name": "validateCompleteness",
+        "description": "验证完整性",
+        "action": "validate",
+        "config": {
+          "checkCoverage": true,
+          "verifyAccuracy": true,
+          "ensureCoherence": true
+        }
+      },
+      {
+        "name": "formatOutput",
+        "description": "格式化输出",
+        "action": "transform",
+        "config": {
+          "applyTemplate": true,
+          "addNavigation": true,
+          "optimizeReadability": true
+        },
+        "output": {
+          "type": "object",
+          "format": "knowledge_base",
+          "schema": {
+            "knowledge": "object",
+            "summary": "string",
+            "index": "object",
+            "metadata": "object",
+            "connections": "array"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["loadKnowledgeBase", "initializeTemplates"],
+      "afterExecute": ["updateKnowledgeGraph", "notifyLearners"],
+      "onError": ["backupData", "reportIssue"]
+    },
+    "validation": {
+      "input": {
+        "learningContent": {
+          "required": ["topic"]
+        }
+      },
+      "output": {
+        "required": ["knowledge", "summary"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "JavaScript异步编程知识沉淀",
+        "description": "将JavaScript异步编程的学习内容进行系统化沉淀",
+        "input": {
+          "learningContent": {
+            "topic": "JavaScript异步编程",
+            "concepts": ["Promise", "async/await", "回调函数", "事件循环"],
+            "examples": [
+              "Promise链式调用示例",
+              "async/await错误处理",
+              "并发请求处理"
+            ],
+            "exercises": [
+              "实现Promise版本的延时函数",
+              "创建异步数据获取工具"
+            ]
+          },
+          "sedimentationType": "comprehensive",
+          "organizationMethod": "hierarchical",
+          "outputFormat": "structured"
+        },
+        "expectedOutput": {
+          "knowledge": {
+            "concepts": {
+              "Promise": {
+                "definition": "Promise是JavaScript中处理异步操作的对象",
+                "usage": "用于避免回调地狱，提供更清晰的异步代码结构",
+                "examples": ["基础Promise使用", "Promise.all并发处理"]
+              }
+            },
+            "patterns": [
+              "错误处理最佳实践",
+              "并发控制策略"
+            ]
+          },
+          "summary": "掌握了JavaScript异步编程的核心概念和实践技巧",
+          "metadata": {
+            "difficulty": "intermediate",
+            "timeInvestment": "8小时",
+            "prerequisites": ["JavaScript基础", "函数概念"]
+          }
+        }
+      }
+    ]
+  }
+}

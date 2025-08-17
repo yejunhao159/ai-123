@@ -1,0 +1,201 @@
+{
+  "name": "problemDiagnosis",
+  "type": "diagnostic",
+  "version": "1.0.0",
+  "description": "问题诊断法：系统性分析和诊断学习或技术问题",
+  "category": "analysis",
+  "tags": ["诊断", "分析", "问题解决", "调试"],
+  "capabilities": ["analytical", "systematic", "chainable"],
+  "parameters": {
+    "problemDescription": {
+      "type": "string",
+      "required": true,
+      "description": "问题描述",
+      "minLength": 10
+    },
+    "domain": {
+      "type": "string",
+      "required": false,
+      "default": "general",
+      "enum": ["programming", "system", "learning", "conceptual", "general"],
+      "description": "问题领域"
+    },
+    "urgency": {
+      "type": "string",
+      "required": false,
+      "default": "medium",
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "紧急程度"
+    },
+    "contextData": {
+      "type": "object",
+      "required": false,
+      "description": "上下文数据（错误日志、环境信息等）"
+    },
+    "diagnosticDepth": {
+      "type": "string",
+      "required": false,
+      "default": "standard",
+      "enum": ["surface", "standard", "deep", "comprehensive"],
+      "description": "诊断深度"
+    },
+    "includePreventiveMeasures": {
+      "type": "boolean",
+      "required": false,
+      "default": true,
+      "description": "是否包含预防措施"
+    }
+  },
+  "implementation": {
+    "steps": [
+      {
+        "name": "problemIntake",
+        "description": "收集问题信息",
+        "action": "analyze",
+        "config": {
+          "parseDescription": true,
+          "categorizeIssue": true,
+          "extractKeywords": true
+        }
+      },
+      {
+        "name": "symptomAnalysis",
+        "description": "分析问题症状",
+        "action": "analyze",
+        "config": {
+          "identifySymptoms": true,
+          "prioritizeIndicators": true,
+          "mapToKnownPatterns": true
+        }
+      },
+      {
+        "name": "hypothesisGeneration",
+        "description": "生成诊断假设",
+        "action": "generate",
+        "config": {
+          "brainstormCauses": true,
+          "rankByProbability": true,
+          "considerMultipleCauses": true
+        }
+      },
+      {
+        "name": "evidenceGathering",
+        "description": "收集验证证据",
+        "action": "analyze",
+        "conditions": {
+          "diagnosticDepth": ["deep", "comprehensive"]
+        },
+        "config": {
+          "requestAdditionalData": true,
+          "analyzePatterns": true,
+          "crossReferenceInfo": true
+        }
+      },
+      {
+        "name": "rootCauseAnalysis",
+        "description": "根因分析",
+        "action": "evaluate",
+        "config": {
+          "applyDiagnosticMethods": true,
+          "identifyRootCause": true,
+          "validateFindings": true
+        }
+      },
+      {
+        "name": "solutionRecommendation",
+        "description": "推荐解决方案",
+        "action": "generate",
+        "config": {
+          "proposeSolutions": true,
+          "prioritizeActions": true,
+          "estimateEffort": true
+        }
+      },
+      {
+        "name": "preventiveMeasures",
+        "description": "制定预防措施",
+        "action": "generate",
+        "conditions": {
+          "includePreventiveMeasures": true
+        },
+        "config": {
+          "identifyPreventionPoints": true,
+          "recommendBestPractices": true
+        }
+      },
+      {
+        "name": "generateReport",
+        "description": "生成诊断报告",
+        "action": "transform",
+        "config": {
+          "structuredReport": true,
+          "actionableRecommendations": true
+        },
+        "output": {
+          "type": "object",
+          "format": "diagnostic_report",
+          "schema": {
+            "problem": "object",
+            "diagnosis": "object", 
+            "solutions": "array",
+            "prevention": "array",
+            "followUp": "object"
+          }
+        }
+      }
+    ],
+    "hooks": {
+      "beforeExecute": ["initializeDiagnostic", "loadKnowledgeBase"],
+      "afterExecute": ["updateKnowledgeBase", "scheduleFolowUp"],
+      "onError": ["escalateProblem", "requestHumanIntervention"]
+    },
+    "validation": {
+      "input": {
+        "problemDescription": {
+          "minLength": 10,
+          "maxLength": 2000
+        }
+      },
+      "output": {
+        "required": ["problem", "diagnosis", "solutions"]
+      }
+    }
+  },
+  "metadata": {
+    "author": "AI-123 教学系统",
+    "created": "2024-01-01T00:00:00Z",
+    "license": "MIT",
+    "examples": [
+      {
+        "name": "代码错误诊断",
+        "description": "诊断JavaScript代码运行错误",
+        "input": {
+          "problemDescription": "我的JavaScript代码在运行时出现'Cannot read property of undefined'错误",
+          "domain": "programming",
+          "urgency": "medium",
+          "contextData": {
+            "errorMessage": "Cannot read property 'length' of undefined",
+            "codeSnippet": "function processArray(arr) { return arr.length; }",
+            "inputData": "undefined"
+          }
+        },
+        "expectedOutput": {
+          "problem": {
+            "type": "NullPointerException",
+            "severity": "medium",
+            "category": "programming"
+          },
+          "diagnosis": {
+            "rootCause": "函数接收到undefined参数",
+            "mechanism": "试图访问undefined对象的属性"
+          },
+          "solutions": [
+            "添加参数验证",
+            "使用默认参数",
+            "添加条件检查"
+          ]
+        }
+      }
+    ]
+  }
+}
